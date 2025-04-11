@@ -53,7 +53,7 @@ namespace LowQualityMod
             RenderSettings.fog = false;
             RenderSettings.skybox = null;
             Time.timeScale = 1f;
-            Time.maximumDeltaTime = 0.05f;
+            Time.maximumDeltaTime = 0.1f;
 
             MelonLogger.Msg("Graphics quality settings have been applied.");
         }
