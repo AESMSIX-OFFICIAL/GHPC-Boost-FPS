@@ -46,7 +46,7 @@ namespace LowQualityMod
             QualitySettings.pixelLightCount = 0;
             QualitySettings.antiAliasing = 0;
             QualitySettings.anisotropicFiltering = AnisotropicFiltering.Disable;
-            QualitySettings.lodBias = 0.01f;
+            QualitySettings.lodBias = 0.5f;
             QualitySettings.shadows = ShadowQuality.Disable;
             QualitySettings.shadowDistance = 0f;
             QualitySettings.realtimeReflectionProbes = false;
@@ -54,7 +54,6 @@ namespace LowQualityMod
             QualitySettings.softParticles = false;
             QualitySettings.softVegetation = false;
             QualitySettings.shadowCascades = 0;
-
             ScalableBufferManager.ResizeBuffers(0.01f, 0.01f);
             RenderSettings.fog = false;
             RenderSettings.skybox = null;
@@ -159,21 +158,36 @@ namespace LowQualityMod
                 if (obj == null || string.IsNullOrEmpty(obj.name)) continue;
 
                 string name = obj.name.ToLower();
-                if (name.Contains("body"))
+                if (name.Contains("tank"))
                 {
                     Vector3 beaconPosition = obj.transform.position + new Vector3(0f, 2f, 0f); // 2 units above
-                    GameObject beacon = GameObject.CreatePrimitive(PrimitiveType.Sphere); // You can replace this with a custom prefab
+
+                    // Buat beacon
+                    GameObject beacon = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     beacon.name = "Beacon_" + obj.name;
                     beacon.transform.position = beaconPosition;
-                    beacon.transform.localScale = new Vector3(0.3f, 50f, 0.3f); // Small beacon
+                    beacon.transform.localScale = new Vector3(0.1f, 60f, 0.1f);
                     beacon.GetComponent<Renderer>().material.color = Color.white;
-                    beacon.transform.SetParent(obj.transform); // Follow the object
+                    beacon.transform.SetParent(obj.transform);
+
+                    // Hapus collider agar tidak interaktif
+                    Collider col = beacon.GetComponent<Collider>();
+                    if (col != null)
+                        GameObject.Destroy(col);
+
+                    // Pastikan tidak ada Rigidbody
+                    Rigidbody rb = beacon.GetComponent<Rigidbody>();
+                    if (rb != null)
+                        GameObject.Destroy(rb);
+
+                    // Optional: taruh di layer khusus
+                    // beacon.layer = LayerMask.NameToLayer("Ignore Raycast");
 
                     beaconCount++;
                 }
             }
 
-            MelonLogger.Msg($"Created {beaconCount} beacons above 'body' or 'tank' objects.");
+            MelonLogger.Msg($"Created {beaconCount} non-physical beacons above 'body' or 'tank' objects.");
         }
 
     }
