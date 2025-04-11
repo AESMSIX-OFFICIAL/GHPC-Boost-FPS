@@ -49,5 +49,3 @@ Contributions are welcome. If you'd like to contribute to this mod, please fork 
 [MIT License](LICENSE) (Replace with the appropriate license if you are using one)
 
 ---
-
-**Make sure to replace `your_username` and `your_repo` with your actual GitHub repository information.** You might also want to create a `LICENSE` file in your repository and update the License section in the README.
